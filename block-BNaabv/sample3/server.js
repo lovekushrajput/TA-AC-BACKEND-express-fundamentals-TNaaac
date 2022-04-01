@@ -4,10 +4,12 @@ let cookieParser = require('cookie-parser')
 
 let app = express()
 
-// error handler
+// moddlewares
 app.use('/admin',(req,res,next)=>{
  next('Unauthorised user access')
 })
+
+app.use(logger('dev'))
 
 app.use(cookieParser())
 
@@ -16,14 +18,13 @@ app.use((req,res,next)=> {
      next()
 })
 
-app.use(logger('dev'))
+
 
 app.use(express.json())
 
 app.use(express.urlencoded({extended : false}))
 
-
-
+// routes
 app.get('/',(req,res)=>{
     res.send(`<h2>Welcome to express</h2>`)
 })
@@ -43,6 +44,8 @@ app.post('/form',(req,res)=>{
 app.post('/json',(req,res)=>{
     res.send(JSON.stringify(req.body))
    })
+
+//erroe handler middleware
 
 // 404 handler
 app.use((req,res,next)=>{
